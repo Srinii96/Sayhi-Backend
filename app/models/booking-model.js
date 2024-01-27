@@ -33,8 +33,12 @@ const bookingSchema = new Schema({
         default: "Pending"
     },
     "otp": {
-        type: String,
-        default: null
+        value: {
+            type: String,
+        },
+        expiryTime: {
+            type: Date,
+        },
     },
     "isStarted": {
         type: Boolean,

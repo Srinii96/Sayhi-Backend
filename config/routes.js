@@ -105,10 +105,14 @@ router.get("/category/:id", authenticateUser, categoryCltrs.showOne)
 
 // service model restfull api's
 // list
-router.get("/service", serviceCltrs.list)
+router.get("/service", authenticateUser, serviceCltrs.list)
 // create
-router.post("/service", checkSchema(serviceValidation), serviceCltrs.create)
-
+router.post("/service", 
+    authenticateUser,
+    authorizeUser(["user"]), 
+    checkSchema(serviceValidation), 
+    serviceCltrs.create
+)
 
 // service provider model restfull api's
 // list for admin approval

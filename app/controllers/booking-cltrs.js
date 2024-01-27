@@ -131,9 +131,10 @@ bookingCltrs.updateStatus = async (req, res)=>{
             //     from: 'whatsapp:+14155238886',
             //     to: `whatsapp:+91${phoneNumber}`
             // })
-            
+
             res.status(200).json({"id": booking._id, "isStarted": booking.isStarted})
         }else if(response === "otp"){
+            const OTP_EXPIRATION_DURATION = 5 * 60 * 1000
             const OTP = Math.floor(100000 + Math.random() * 900000)
             const booking = await Booking.findById(
                 {"_id": id, "serviceProviderId": req.user.serviceProviderId}
@@ -149,6 +150,9 @@ bookingCltrs.updateStatus = async (req, res)=>{
 
             const phoneNumber = booking.userId.mobileNumber
 
+            // Set expiration time for the OTP
+            const otpExpirationTime = new Date(Date.now() + OTP_EXPIRATION_DURATION)
+
             // const message = await client.messages.create({
             //     body: `Your OTP for verification: ${OTP}`,
             //     from: 'whatsapp:+14155238886',
@@ -157,7 +161,12 @@ bookingCltrs.updateStatus = async (req, res)=>{
 
             await Booking.findOneAndUpdate(
                 {"_id": id, "serviceProviderId": req.user.serviceProviderId},
-                {"otp": OTP},{new: true}
+                {
+                    $set: {
+                        "otp.value": OTP,
+                        "otp.expiryTime": otpExpirationTime
+                    }
+                },{new: true}
             )
 
             res.status(200).json({"msg": 'OTP sent successfully to registered mobile number!'})
@@ -168,11 +177,18 @@ bookingCltrs.updateStatus = async (req, res)=>{
 
             const isOtp = booking.otp
 
-            if(isOtp.length === 0){
+            if(isOtp.value.length === 0){
                 return res.status(400).json({"error": "please send OTP to user before ending service!"})  
             }
 
-            if(isOtp !== otp){
+            // Check if OTP has expired
+            const currentTime = Date.now()
+
+            if (currentTime > new Date(isOtp.expiryTime).getTime()) {
+                return res.status(400).json({ "error": "OTP has expired. Please send a new OTP." })
+            }
+
+            if(isOtp.value !== otp){
                 return res.status(400).json({"error": "Incorrect OTP"})    
             }
 
