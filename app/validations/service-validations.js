@@ -17,7 +17,7 @@ const serviceValidation = {
                 const service = await Service.findOne({ "serviceName": { "$regex": value } })
 
                 if (service) {
-                      throw new Error(`Service name '${value}' already exists`)
+                    throw new Error(`Service name '${value}' already exists`)
                 }
 
                 return true

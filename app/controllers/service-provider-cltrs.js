@@ -117,7 +117,7 @@ serviceProviderCltrs.listForUser = async (req, res)=>{
             },
             "isApproved": true,
             "categoryId": id,
-            // "userId": { $ne: req.user.id }
+            "userId": { $ne: req.user.id }
         }).populate({
             path: 'serviceIds',
             select: 'serviceName'
