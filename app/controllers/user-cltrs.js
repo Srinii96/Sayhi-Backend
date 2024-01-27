@@ -190,7 +190,7 @@ userCltrs.showOne = async (req, res)=>{
   const { id, email, role } = req.user
   try {
     const user = await User.findOne({
-      "_id": id, email, role
+      "_id": id, email
     }).populate({
       path: "address",
       match: { userId: id} 
