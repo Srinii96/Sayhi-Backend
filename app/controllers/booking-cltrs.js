@@ -131,7 +131,7 @@ bookingCltrs.updateStatus = async (req, res)=>{
             //     from: 'whatsapp:+14155238886',
             //     to: `whatsapp:+91${phoneNumber}`
             // })
-            
+
             res.status(200).json({"id": booking._id, "isStarted": booking.isStarted})
         }else if(response === "otp"){
             const OTP = Math.floor(100000 + Math.random() * 900000)

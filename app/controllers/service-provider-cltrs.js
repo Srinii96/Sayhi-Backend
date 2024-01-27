@@ -112,7 +112,7 @@ serviceProviderCltrs.listForUser = async (req, res)=>{
                         type: 'Point',
                         coordinates: [parsedLongitude, parsedLatitude],
                     },
-                    $maxDistance: 250000,
+                    $maxDistance: 15000,
                 },
             },
             "isApproved": true,
@@ -144,7 +144,7 @@ serviceProviderCltrs.updateService = async (req, res)=>{
                 {"_id": id}, {"isApproved": true}, {new: true}
             )
             io.to(`${result.userId}`).emit("approved", `Admin has been approved ${result.serviceProviderName}`)
-            res.status(200).json(result._id)
+            res.status(200).json({"id":result._id})
         }else{
             const result = await ServiceProvider.findOneAndUpdate(
                 {"_id": id}, {"isRejected": true}, {new: true}
