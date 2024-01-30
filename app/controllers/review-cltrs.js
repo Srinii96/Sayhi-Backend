@@ -5,6 +5,17 @@ const _ = require("lodash")
 
 const reviewCltrs = {}
 
+// list
+reviewCltrs.list = async (req, res)=>{
+    const { id } = req.params
+    try {
+        const reviews = await Review.find({"serviceProviderId": id})
+        res.status(200).json(reviews)
+    }catch(err){
+        res.status(500).json(err)
+    }
+}
+
 // create
 reviewCltrs.create = async (req, res)=>{
     const errors = validationResult(req)

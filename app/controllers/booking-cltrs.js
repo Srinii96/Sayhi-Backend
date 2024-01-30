@@ -46,7 +46,7 @@ bookingCltrs.listAccepted = async (req, res)=>{
     try {
         const bookings = await Booking.find(
             {"serviceProviderId": req.user.serviceProviderId, 
-                "bookingStatus": "Accepted", "isEnded": false,}
+                "bookingStatus": "Accepted", "isEnded": false,} //"payment": false
             )
             .populate({
                 path: "userId",
@@ -98,6 +98,17 @@ bookingCltrs.create = async (req, res)=>{
         }else{
             res.status(400).json({"error": "Booking service is unsuccessfull, try again."})
         }
+    }catch(err){
+        res.status(500).json(err)
+    }
+}
+
+// showBookedSlots
+bookingCltrs.showBookedSlots = async (req, res)=>{
+    const {id} = req.params
+    try{
+        const bookings = await Booking.find({"serviceProviderId": id})
+        res.status(200).json(bookings)
     }catch(err){
         res.status(500).json(err)
     }
@@ -200,7 +211,7 @@ bookingCltrs.updateStatus = async (req, res)=>{
             const statusResponse = _.pick(result, ["_id", "isEnded"])
             io.to(`${result.userId}`).emit("updateOrderStatusEnd", statusResponse)
 
-            res.status(200).json({"id": booking._id, "isStarted": booking.isStarted})
+            res.status(200).json({"id": booking._id, "isEnded": result.isEnded})
         }  
     } catch(err){
         res.status(500).json(err)

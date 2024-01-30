@@ -32,7 +32,8 @@ categoryCltrs.create = async (req, res)=>{
 // read
 categoryCltrs.list = async (req, res)=>{
     try{
-        const categories = await Category.find()
+        const categories = await Category.find().populate({
+            path: "serviceIds", select: "serviceName"})
         res.status(200).json(categories)
 
         const io = await getIOInstance()

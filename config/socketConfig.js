@@ -15,6 +15,10 @@ module.exports = function (io) {
                 socket.join(userId)
             })
 
+            socket.on('privateMessage', ({ userId, amount }) => {
+                io.to(userId).emit('privateMessage', { amount })
+            })
+
             // Clean up the event listener after the first connection
             socket.off('connection', connectionHandler)
 

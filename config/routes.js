@@ -170,6 +170,13 @@ router.post("/service-booking",
     checkSchema(bookingValidation), 
     bookingCltrs.create
 )
+// showBookedSlots
+router.get("/service-booking/:id", 
+    authenticateUser, 
+    authorizeUser(["user"]), 
+    bookingCltrs.showBookedSlots
+)
+
 // update status
 router.put("/service-booking/:id/:response",
     authenticateUser,
@@ -225,6 +232,12 @@ router.post("/reviews",
     authorizeUser(["user"]),
     checkSchema(reviewValidations),
     reviewCltrs.create
+)
+// list
+router.get("/reviews/:id",
+    authenticateUser,
+    authorizeUser(["user"]),
+    reviewCltrs.list
 )
 
 module.exports = router

@@ -47,6 +47,10 @@ const bookingSchema = new Schema({
     "isEnded": {
         type: Boolean,
         default: false
+    },
+    "payment": {
+        type: Boolean,
+        default: false 
     }
 }, {timestamps: true})
 
