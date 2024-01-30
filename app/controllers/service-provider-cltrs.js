@@ -100,10 +100,14 @@ serviceProviderCltrs.listForUser = async (req, res)=>{
     const parsedLatitude = parseFloat(latitude)
     const parsedLongitude = parseFloat(longitude)
 
+    const page = req.query.page || 1
+    const limit = 4
+    const skip = (page - 1) * limit
+
     if (isNaN(parsedLatitude) || isNaN(parsedLongitude)) {
         return res.status(400).json({ error: 'Invalid latitude or longitude values' });
     }
-    
+
     try {
         const services = await ServiceProvider.find({
             'locations.coordinates': {
@@ -118,7 +122,8 @@ serviceProviderCltrs.listForUser = async (req, res)=>{
             "isApproved": true,
             "categoryId": id,
             "userId": { $ne: req.user.id }
-        }).populate({
+        }).skip(skip).limit(limit)
+        .populate({
             path: 'serviceIds',
             select: 'serviceName'
         }).populate({
@@ -128,6 +133,7 @@ serviceProviderCltrs.listForUser = async (req, res)=>{
             path: 'userId',
             select: 'profilePicture.url'
         })
+        console.log(services)
         res.status(200).json(services)
     } catch(err){
         res.status(500).json(err)

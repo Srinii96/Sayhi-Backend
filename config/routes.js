@@ -76,15 +76,23 @@ router.put("/update-profile/:id",
 // addess model restfull api's
 // create
 router.post("/user-address", 
-    authenticateUser, checkSchema(addressValidation), 
-    authorizeUser(["user", "technician", "selfEmployee"]), 
+    authenticateUser, 
+    authorizeUser(["user", "technician", "selfEmployee"]),
+    checkSchema(addressValidation),  
     addressCltrs.create
 )
+// showOne
+router.get("/user-address/:id", 
+    authenticateUser,
+    authorizeUser(["technician", "selfEmployee"]), 
+    addressCltrs.showOne
+)
+
 // update
 router.put("/user-address/:id", 
     authenticateUser, 
-    checkSchema(addressValidation),
     authorizeUser(["user", "technician", "selfEmployee"]), 
+    checkSchema(addressValidation),
     addressCltrs.update
 )
 

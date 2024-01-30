@@ -35,6 +35,21 @@ addressCltrs.create = async (req, res)=>{
     }
 }
 
+// showOne
+addressCltrs.showOne = async (req, res)=>{
+    const { id } = req.params
+
+    try{
+        const address = await Address.findOne({"userId": id})
+        if(!address){
+            return res.status(404).json({})
+        }
+        res.status(200).json(address)
+    }catch(err){
+        res.status(500).json(err)
+    }
+}
+
 // update
 addressCltrs.update = async (req, res)=>{
     const errors = validationResult(req)
