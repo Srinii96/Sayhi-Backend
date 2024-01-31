@@ -1,7 +1,9 @@
 const Payment = require("../models/payment-model")
 const Order = require("../models/order-status-model")
+const Booking = require("../models/booking-model")
 const { validationResult } = require("express-validator")
 const _ = require("lodash")
+const { getIOInstance } = require("../../config/socketConfig")
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 const paymentCltrs = {}
@@ -61,6 +63,9 @@ paymentCltrs.create = async (req, res)=>{
 
 paymentCltrs.update = async (req, res)=>{
     const { id } = req.params
+
+    const io = await getIOInstance()
+
     try{
         const payment = await Payment.findOneAndUpdate(
             {"stripTransactionId": id}, {"paymentStatus": "successfull"}, {new: true}
@@ -78,12 +83,19 @@ paymentCltrs.update = async (req, res)=>{
         const result = await Order.populate(
             order, [
                 { 
-                    path: "bookingId", select: "serviceProviderId",
-                    populate: { path: "serviceProviderId", select: "serviceProviderName" }
+                    path: "bookingId", select: "_id serviceProviderId",
+                    populate: { path: "serviceProviderId", select: "serviceProviderName userId" }
                  }
             ]
         )
-        
+
+        const booking = await Booking.findByIdAndUpdate(
+            {'_id': result.bookingId._id}, {'payment': true}, {new: true}
+        )
+
+        const paymentResponse = _.pick(booking, ["_id", "payment"])
+        io.to(`${result.bookingId.serviceProviderId.userId}`).emit("updatePaymentStatus", paymentResponse)
+
         res.status(200).json({"oId": result._id, "serviceProvider": result.bookingId.serviceProviderId})
     }catch(err){
         res.status(500).json(err)
