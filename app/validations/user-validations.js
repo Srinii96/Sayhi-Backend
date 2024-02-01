@@ -134,10 +134,36 @@ const updatePasswordValidation = {
     
 }
 
+const profilePictureValidation = {
+    'profilePicture': {
+        custom: {
+            options: async (value, {req})=>{
+                if(!req.file){
+                    throw new Error("Please upload an image")
+                }
+
+                const allowedType = ["image/png", "image/jpeg" ]
+
+                if(!allowedType.includes(req.file.mimetype)){
+                    throw new Error('Only JPEG, and PNG images are allowed')
+                }
+
+                const maxSizeInBytes = 1 * 1024 * 1024 
+
+                if (req.file.size > maxSizeInBytes) {
+                    throw new Error('Image size exceeds 2MB limit')
+                }
+            },
+            bail: true,
+        }
+    }
+}
+
 module.exports = {
     registerValidation, 
     loginValidation,
     forgotPasswordEmailValidation,
     updatePasswordValidation,
-    resetPasswordValidation
+    resetPasswordValidation,
+    profilePictureValidation
 }

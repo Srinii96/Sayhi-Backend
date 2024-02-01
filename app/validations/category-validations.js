@@ -49,7 +49,6 @@ const categoryValidation = {
                     throw new Error('Image size exceeds 2MB limit')
                 }
             },
-            errorMessage: 'Not a valid image',
             bail: true,
         }
     }
