@@ -10,7 +10,7 @@ const addressCltrs = {}
 addressCltrs.create = async (req, res)=>{
     const errors = validationResult(req)
     if(!errors.isEmpty()){
-        return res.status(400).json({"errors": errors.array()})
+        return res.status(400).json({"error": errors.array()})
     }
     const body = _.pick(req.body, ["doorNo", "buildingName", "locality", "landmark", "city", "state", "pinCode"])
     const {id, email} = req.user
@@ -54,7 +54,7 @@ addressCltrs.showOne = async (req, res)=>{
 addressCltrs.update = async (req, res)=>{
     const errors = validationResult(req)
     if(!errors.isEmpty()){
-        return res.status(400).json({"errors": errors.array()})
+        return res.status(400).json({"error": errors.array()})
     }
     const body = _.pick(req.body, ["doorNo", "buildingName", "locality", "landmark", "city", "state", "pinCode"])
     const { id } = req.params
