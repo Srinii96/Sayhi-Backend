@@ -14,6 +14,7 @@ serviceCltrs.create = async (req, res)=>{
     const body = _.pick(req.body, ["serviceName", "categoryId"])
     try {
         const service = await Service.create(body)
+        await Category.findOneAndUpdate({"_id": service.categoryId}, {$push: {'serviceIds': service._id}})
         res.status(201).json(service)
     } catch(err){
         res.status(500).json(err)
