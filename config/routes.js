@@ -10,7 +10,8 @@ const { registerValidation,
     loginValidation,
     forgotPasswordEmailValidation, 
     updatePasswordValidation,
-    resetPasswordValidation 
+    resetPasswordValidation,
+    profilePictureValidation 
 } = require("../app/validations/user-validations")
 const addressValidation = require("../app/validations/address-validation")
 const categoryValidation = require("../app/validations/category-validations")
@@ -30,6 +31,7 @@ const bookingCltrs = require("../app/controllers/booking-cltrs")
 const orderCltrs = require("../app/controllers/order-cltrs")
 const paymentCltrs = require("../app/controllers/payment-cltrs")
 const reviewCltrs = require("../app/controllers/review-cltrs")
+const dashboardCltrs = require("../app/controllers/dashboard-cltrs")
 
 // user model restfull api's
 // Register Route
@@ -62,7 +64,8 @@ router.get('/verify-email/:userId', userCltrs.verifyEmail)
 // update profile pic
 router.put("/profile-picture", 
     authenticateUser, 
-    upload.single("profilePicture"), 
+    upload.single("profilePicture"),
+    checkSchema(profilePictureValidation), 
     userCltrs.updateProfilePicture
 )
 // update user profile
@@ -238,6 +241,21 @@ router.get("/reviews/:id",
     authenticateUser,
     authorizeUser(["user"]),
     reviewCltrs.list
+)
+
+// dashboard routes
+// list users
+router.get("/dashboard",  
+    authenticateUser, 
+    authorizeUser(["admin"]), 
+    dashboardCltrs.users
+)
+
+// bookings and revenue
+router.get("/booking/dashboard",  
+    authenticateUser, 
+    authorizeUser(["admin"]), 
+    dashboardCltrs.bookings
 )
 
 module.exports = router

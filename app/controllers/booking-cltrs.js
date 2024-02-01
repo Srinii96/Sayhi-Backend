@@ -46,7 +46,7 @@ bookingCltrs.listAccepted = async (req, res)=>{
     try {
         const bookings = await Booking.find(
             {"serviceProviderId": req.user.serviceProviderId, 
-                "bookingStatus": "Accepted", "isEnded": false,} //"payment": false
+                "bookingStatus": "Accepted", "payment": false}
             )
             .populate({
                 path: "userId",
@@ -84,6 +84,16 @@ bookingCltrs.create = async (req, res)=>{
     body.userId = id
 
     try {
+        const existingBooking = await Booking.findOne({
+            userId: id,
+            serviceProviderId: body.serviceProviderId,
+            scheduleDate: body.scheduleDate
+          })
+      
+        if (existingBooking) {
+            return res.status(400).json({ "error": "You have already booked this service provider today." });
+        }
+
         const booking = await Booking.create(body)
         const bookingId = {"bookingId": booking._id}
         if(booking){

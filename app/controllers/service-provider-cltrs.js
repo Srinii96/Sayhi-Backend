@@ -116,7 +116,7 @@ serviceProviderCltrs.listForUser = async (req, res)=>{
                         type: 'Point',
                         coordinates: [parsedLongitude, parsedLatitude],
                     },
-                    $maxDistance: 15000,
+                    $maxDistance: 10000,
                 },
             },
             "isApproved": true,

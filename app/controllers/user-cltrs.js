@@ -208,6 +208,12 @@ userCltrs.showOne = async (req, res)=>{
 
 //update profile Picture
 userCltrs.updateProfilePicture = async (req, res)=>{
+  const errors = validationResult(req)
+  
+  if(!errors.isEmpty()){
+    return res.status(400).json({"error": errors.array()})
+  }
+
   const { id, email, role } = req.user
 
   try {
