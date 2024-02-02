@@ -250,7 +250,6 @@ router.get("/dashboard",
     authorizeUser(["admin"]), 
     dashboardCltrs.users
 )
-
 // bookings and revenue
 router.get("/booking/dashboard",  
     authenticateUser, 

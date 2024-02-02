@@ -9,7 +9,7 @@ const serviceCltrs = {}
 serviceCltrs.create = async (req, res)=>{
     const errors = validationResult(req)
     if(!errors.isEmpty()){
-      return res.status(400).json({"errors": errors.array()})
+      return res.status(400).json({"error": errors.array()})
     }
     const body = _.pick(req.body, ["serviceName", "categoryId"])
     try {

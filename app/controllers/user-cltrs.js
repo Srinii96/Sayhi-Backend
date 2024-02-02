@@ -31,7 +31,7 @@ transporter.verify((err, success)=>{
 userCltrs.register = async (req, res)=>{
   const errors = validationResult(req)
   if(!errors.isEmpty()){
-    return res.status(400).json({"errors": errors.array()})
+    return res.status(400).json({"error": errors.array()})
   }
   const body = _.pick(req.body, ["firstName", "lastName", "email", "password"])
   try{
@@ -65,7 +65,7 @@ userCltrs.register = async (req, res)=>{
 userCltrs.login = async (req, res)=>{
   const errors = validationResult(req)
   if(!errors.isEmpty()){
-    return res.status(400).json({"errors": errors.array()})
+    return res.status(400).json({"error": errors.array()})
   }
   const body = _.pick(req.body, ["email", "password"])
 
@@ -240,7 +240,7 @@ userCltrs.updateProfilePicture = async (req, res)=>{
 userCltrs.updateProfile = async (req, res)=>{
   const errors = validationResult(req)
   if(!errors.isEmpty()){
-    return res.status(400).json({"errors": errors.array()})
+    return res.status(400).json({"error": errors.array()})
   }
   const body = _.pick(req.body, ["firstName", "lastName", "currentPassword", "updatePassword", "mobileNumber"])
   const {email, id, role} = req.user
