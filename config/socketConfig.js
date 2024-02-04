@@ -1,6 +1,5 @@
 let ioInstancePromise
 
-
 module.exports = function (io) {
 
     ioInstancePromise = new Promise((resolve) => {
@@ -14,6 +13,12 @@ module.exports = function (io) {
             socket.on("joinRoom", (userId)=>{
                 socket.join(userId)
             })
+
+            // // Set a timeout for the socket
+            // setTimeout(() => {
+            //     socket.disconnect();
+            //     console.log('A user disconnected due to timeout');
+            // }, 5000)
 
             socket.on('privateMessage', ({ userId, amount }) => {
                 io.to(userId).emit('privateMessage', { amount })
