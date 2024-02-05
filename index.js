@@ -19,8 +19,6 @@ const io = new Server(server, {
 })
 require("./config/socketConfig")(io)
 
-
-
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cors())
