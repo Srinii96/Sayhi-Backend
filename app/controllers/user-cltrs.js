@@ -114,7 +114,7 @@ userCltrs.verifyEmail = async (req, res) => {
   try{
     const user = await User.findByIdAndUpdate(userId, {isVerified: true}, {new: true})
     const message = `${user.firstName} verified successfully. Please log in.`
-    // Redirect with the message as a query parameter
+    // Redirect with the message as a query parameters
     res.redirect(`${process.env.CLIENT_URL}/sign-in?message=${encodeURIComponent(message)}`)
   }catch(err){
     res.status(500).json(err)
