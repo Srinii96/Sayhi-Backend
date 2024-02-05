@@ -59,7 +59,8 @@ router.get("/user-data",
     authenticateUser, 
     userCltrs.showOne
 )
-
+// user verify
+router.get('/verify-email/:userId', userCltrs.verifyEmail)
 // update profile pic
 router.put("/profile-picture", 
     authenticateUser, 
@@ -73,8 +74,6 @@ router.put("/update-profile/:id",
     checkSchema(updatePasswordValidation), 
     userCltrs.updateProfile
 )
-// user verify
-router.put('/verify/email/:userId', userCltrs.verifyEmail)
 
 
 // addess model restfull api's

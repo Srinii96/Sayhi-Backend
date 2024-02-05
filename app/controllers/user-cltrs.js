@@ -44,16 +44,15 @@ userCltrs.register = async (req, res)=>{
     }
     await user.save()
     const encryptedUserId = jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: "1h"})
-    console.log("23456788990")
     transporter.sendMail({
       from: process.env.G_MAIL,
       to: `${user.email}`,
       subject: "Service At Your Home user register verification email",
-      text: `Hello ${user.firstName}!, Welcome to Service At Your Home Family. Click the following link to verify your email: ${process.env.CLIENT_URL}/api/verify/email/${encryptedUserId}`,
+      text: `Hello ${user.firstName}!, Welcome to Service At Your Home Family. Click the following link to verify your email: ${process.env.CLIENT_URL}/api/verify-email/${encryptedUserId}`,
       html: `
         <p>Hello ${user.firstName}!,</p>
         <p>Welcome to Service At Your Home Family. Please click the link below to verify your email:</p>
-        <p><a href='${process.env.CLIENT_URL}/api/verify/email/${encryptedUserId}'>Click here to verify your email.</a></p>
+        <p><a href='${process.env.CLIENT_URL}/api/verify-email/${encryptedUserId}'>Click here to verify your email.</a></p>
       `
     })    
     res.status(201).json({msg:`${user.firstName} registered Successfully! Please check your email to verify.`})
