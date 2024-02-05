@@ -73,7 +73,6 @@ router.put("/update-profile/:id",
     checkSchema(updatePasswordValidation), 
     userCltrs.updateProfile
 )
-
 // user verify
 router.put('/verify/email/:userId', userCltrs.verifyEmail)
 
