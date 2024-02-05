@@ -48,11 +48,11 @@ userCltrs.register = async (req, res)=>{
       from: process.env.G_MAIL,
       to: `${user.email}`,
       subject: "Service At Your Home user register verification email",
-      text: `Hello ${user.firstName}!, Welcome to Service At Your Home Family. Click the following link to verify your email: ${process.env.SERVER_URL}/api/verify-email/${encryptedUserId}`,
+      text: `Hello ${user.firstName}!, Welcome to Service At Your Home Family. Click the following link to verify your email: https://service-at-your-home.onrender.com/api/verify-email/${encryptedUserId}`,
       html: `
         <p>Hello ${user.firstName}!,</p>
         <p>Welcome to Service At Your Home Family. Please click the link below to verify your email:</p>
-        <p><a href='${process.env.SERVER_URL}/api/verify-email/${encryptedUserId}'>Click here to verify your email.</a></p>
+        <p><a href='https://service-at-your-home.onrender.com/api/verify-email/${encryptedUserId}'>Click here to verify your email.</a></p>
       `
     })    
     res.status(201).json({msg:`${user.firstName} registered Successfully! Please check your email to verify.`})
