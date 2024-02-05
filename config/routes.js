@@ -60,9 +60,7 @@ router.get("/user-data",
     userCltrs.showOne
 )
 // user verify
-router.get('/verify-email/:userId', (req, res)=>{
-    res.send("welcome user")
-})
+router.get('/verify-email/:userId', userCltrs.verifyEmail)
 // update profile pic
 router.put("/profile-picture", 
     authenticateUser, 
