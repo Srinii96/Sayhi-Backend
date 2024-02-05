@@ -257,4 +257,9 @@ router.get("/booking/dashboard",
     dashboardCltrs.bookings
 )
 
+// dummy
+router.get("/", (req, res)=>{
+    res.send("Welcome")
+})
+
 module.exports = router
